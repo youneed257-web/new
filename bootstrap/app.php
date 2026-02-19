@@ -19,7 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // -------------------------------------------------------
         $middleware->alias([
             'auth'      => \App\Http\Middleware\Authenticate::class,
-            'guest'     => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'guest'     => \Illuminate\Auth\Middleware\RedirectIfAuthenticated::class,
             'verified'  => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
             'throttle'  => \Illuminate\Routing\Middleware\ThrottleRequests::class,
             'can'       => \Illuminate\Auth\Middleware\Authorize::class,

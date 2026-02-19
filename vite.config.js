@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     server: {
-    host: '192.168.10.245' // your actual IP address here
+    host: true, // Listen on all local IPs
   },
     plugins: [
         laravel({
