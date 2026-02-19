@@ -36,8 +36,6 @@ Route::get('/contact', function(){
 // Route to Dashboard
 Route::get('/',[AuthController::class, 'home'])->name('home');
 
-
-
 Route::post('/store', [BookController::class, 'store'])->name('book.store');
 Route::get('/show', [BookController::class, 'show'])->name('book.show');
 Route::get('edit/{id}/', [BookController::class, 'edit'])->name('book.edit');

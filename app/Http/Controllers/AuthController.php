@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
+
     public function create()
     {
         return view('permission.form');
@@ -93,5 +94,6 @@ public function logout()
 {
     Auth::guard('web')->logout();
     return redirect()->route('login');
+
 }
 }
