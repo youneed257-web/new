@@ -24,6 +24,9 @@ class NetdataCrud extends Component
     public bool $showForm = false;
     public int $perPage = 10;
     public string $search = '';
+    public $deleteId = null;
+    public $showDeleteModal = false; // ← renamed from $confirmDelete
+
 
     #[On('resetPage')]
     public function resetPage()
@@ -118,10 +121,34 @@ class NetdataCrud extends Component
         $this->closeForm();
     }
 
-    public function delete($id)
+   public function delete($id)
     {
-        Netdata::findOrFail($id)->delete();
-        session()->flash('message', 'Net data deleted successfully!');
+        $this->deleteId = $id;
+        $this->showDeleteModal = true;
+    }
+
+    // Step 2 — Execute delete
+    public function confirmDelete()
+    {
+        if ($this->deleteId) {
+            $record = Netdata::find($this->deleteId);
+
+            if ($record) {
+                $record->delete();
+                session()->flash('message', 'Net data deleted successfully!');
+            } else {
+                session()->flash('error', 'Record not found!');
+            }
+
+            $this->cancelDelete();
+        }
+    }
+
+    // Step 3 — Cancel / Reset
+    public function cancelDelete()
+    {
+        $this->deleteId = null;
+        $this->showDeleteModal = false; // ← renamed
     }
 
     public function closeForm()

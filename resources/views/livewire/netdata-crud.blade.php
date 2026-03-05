@@ -1,5 +1,6 @@
 <div class="container mx-auto px-4 py-8 max-w-4xl ">
     @livewireStyles
+    @include('partials.flash-message')
     <style>
         /* custom scrollbar from permission view */
         .scrollbar-thin::-webkit-scrollbar {
@@ -49,22 +50,28 @@
             <div class="text-sm text-gray-500">
                 Total Line: <span class="font-semibold text-gray-700">{{ $netdata->total() }}</span>
             </div>
-            <button @click="$wire.createNew()"
-                class="px-6 py-2.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white bg-brand font-medium rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                <span class="flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    New ROOM
-                </span>
-            </button>
+            @can('user-create')
+                <button @click="$wire.createNew()"
+                    class="px-6 py-2.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white bg-brand font-medium rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        New ROOM
+                    </span>
+                </button>
+            @endcan
         </div>
         {{-- search --}}
         <div class="mt-4">
             <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                    </svg>
                 </div>
                 <input type="search" id="search" wire:model.live="search"
                     class="block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
@@ -112,15 +119,18 @@
                                 </td>
                                 <td class="px-6 py-4 text-right whitespace-nowrap">
                                     <div class="flex items-center justify-end gap-3">
-                                        <button @click="$wire.edit({{ $item->id }})"
-                                            class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
-                                            Edit
-                                        </button>
-                                        <button @click="$wire.delete({{ $item->id }})"
-                                            onclick="return confirm('Are you sure you want to delete this record?');"
-                                            class="text-red-600 hover:text-red-800 font-medium text-sm transition-colors">
-                                            Delete
-                                        </button>
+                                        @can('User edit')
+                                            <button @click="$wire.edit({{ $item->id }})"
+                                                class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
+                                                Edit
+                                            </button>
+                                        @endcan
+                                        @can('User delete')
+                                            <button wire:click="delete({{ $item->id }})"
+                                                class="text-red-600 hover:text-red-800 font-medium text-sm transition-colors">
+                                                Delete
+                                            </button>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -251,4 +261,37 @@
             </div>
         </div>
     @endif
+
+    <!-- Delete Confirmation Modal -->
+   @if ($showDeleteModal)
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6">
+                <div class="p-4 md:p-5 text-center">
+                    <svg class="mx-auto mb-4 text-fg-disabled w-12 h-12" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    <h3 class="mb-6 text-body">Are you sure you want to delete this record?</h3>
+                    <div class="flex items-center space-x-4 justify-center">
+                        <!-- Cancel -->
+                        <button type="button"
+                            @click="$wire.cancelDelete()"
+                            class="text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 rounded-base text-sm px-4 py-2.5">
+                            No, cancel
+                        </button>
+                        <!-- Confirm -->
+                        <button type="button"
+                            @click="$wire.confirmDelete()"
+                            class="text-white bg-danger box-border border border-transparent hover:bg-danger-strong focus:ring-4 focus:ring-danger-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                            Yes, I'm sure
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 </div>

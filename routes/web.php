@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -35,9 +36,9 @@ Route::get('mainnet', function () {
 })->name('mainnet');
 
 // alias route using a more descriptive name (same view/component)
-Route::get('netdata', function () {
-    return view('mainnet.net');
-})->name('netdata.index');
+// Route::get('netdata', function () {
+//     return view('mainnet.net');
+// })->name('netdata.index');
 
 // Route::get('/create', [BookController::class, 'create'])->name('book.create');
 
@@ -58,6 +59,10 @@ Route::get('role', function() {
 })->name('role.index');
 
 // User Management
+// Route::get('/mainnet', \App\Livewire\NetdataCrud::class)
+//     ->name('mainnet')
+//     ->middleware('can:user-access');
+
 Route::get('user/create', [AuthController::class, 'create_user'])->name('user.create');
 Route::post('user/stores', [AuthController::class, 'store_user'])->name('user.stores');
 Route::put('user/update/{id}', [AuthController::class, 'update_user'])->name('user.update');
