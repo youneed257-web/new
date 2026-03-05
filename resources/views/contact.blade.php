@@ -113,7 +113,7 @@
                                     </div>
                                     <div>
                                         <h3 class="font-semibold text-gray-800 mb-1">Phone</h3>
-                                        <p class="text-gray-600">+1 (555) 123-4567<br>+1 (555) 987-6543</p>
+                                        <p class="text-gray-600">+855 00 00 00 <br>+855 00 00 00</p>
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +133,7 @@
                                 </div>
                                 <div class="flex justify-between">
                                     <span>Sunday</span>
-                                    <span class="font-semibold">Closed</span>
+                                    <span class="font-semibold">Over time</span>
                                 </div>
                             </div>
                         </div>

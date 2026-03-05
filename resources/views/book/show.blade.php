@@ -193,10 +193,12 @@
                                             </svg>
                                             View
                                         </a>
+                                        @can('user-create')
                                         <a href="{{ route('book.edit', $item->id) }}"
                                             class="inline-flex items-center px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition text-sm font-medium">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
+                                        @endcan
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
@@ -207,6 +209,7 @@
                                             onsubmit="return confirm('Are you sure you want to delete this book?')">
                                             @csrf
                                             @method('DELETE')
+                                            @can('user-create')
                                             <button type="submit"
                                                 class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition text-sm font-medium">
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
@@ -217,6 +220,7 @@
                                                 </svg>
                                                 Delete
                                             </button>
+                                            @endcan
                                         </form>
                                     </div>
                                 </td>

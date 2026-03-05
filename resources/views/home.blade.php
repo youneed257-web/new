@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
+    <title>home</title>
 </head>
-
 <body>
     @extends('layouts.app')
+
+@section('content')
     <!-- Hero Section -->
     <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <!-- Hero Content -->
@@ -322,20 +322,67 @@
     </div>
 
     <!-- CTA Section -->
-    <div class="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold text-white mb-4">
-                Ready to get started?
-            </h2>
-            <p class="text-xl text-blue-100 mb-8">
-                Join thousands of users already using our platform
-            </p>
-            <a href="#signup"
-                class="inline-block px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition shadow-lg hover:shadow-xl font-medium">
-                Join Now
-            </a>
+
+   {{-- Beautiful Grid Gallery Section --}}
+<div class="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+    <div class="container mx-auto px-6">
+        
+        {{-- Section Header --}}
+        <div class="text-center mb-16">
+            <h2 class="text-5xl font-bold text-white mb-4">Our Courses</h2>
+        </div>
+
+        {{-- Grid Layout - 3 Images --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            
+            {{-- Image Card 1 --}}
+            <figure class="relative overflow-hidden rounded-xl shadow-2xl group cursor-pointer transform transition-all duration-500 hover:scale-105 hover:-rotate-1">
+                <img class=" object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" 
+                     src="{{ asset('img/css3.jpg') }}" 
+                     alt="CSS Design">
+                
+                {{-- Overlay --}}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-2xl font-bold text-white mb-2">CSS Mastery</h3>
+                        <p class="text-white/90 mb-4">Learn modern CSS techniques</p>
+                        <button class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                            View More
+                        </button>
+                    </div>
+                </div>
+                
+                {{-- Bottom Caption (Always Visible) --}}
+                <figcaption class="absolute bottom-0 left-0 right-0 px-6 py-4 bg-gradient-to-t from-black/80 to-transparent group-hover:opacity-0 transition-opacity duration-500">
+                    <p class="text-lg text-white font-semibold">Modern CSS Design</p>
+                </figcaption>
+            </figure>
+
+            {{-- Image Card 2 --}}
+            <figure class="relative overflow-hidden rounded-xl shadow-2xl group cursor-pointer transform transition-all duration-500 hover:scale-105">
+                <img class= object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" 
+                     src="{{ asset('img/css3.jpg') }}" 
+                     alt="Network Design">
+                
+                {{-- Overlay --}}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-2xl font-bold text-white mb-2">Network Solutions</h3>
+                        <p class="text-white/90 mb-4">Advanced networking concepts</p>
+                        <button class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                            View More
+                        </button>
+                    </div>
+                </div>
+                
+                {{-- Bottom Caption (Always Visible) --}}
+                <figcaption class="absolute bottom-0 left-0 right-0 px-6 py-4 bg-gradient-to-t from-black/80 to-transparent group-hover:opacity-0 transition-opacity duration-500">
+                    <p class="text-lg text-white font-semibold">HTML CSS JS</p>
+                </figcaption>
+            </figure>
         </div>
     </div>
+</div>
+@endsection
 </body>
-
 </html>

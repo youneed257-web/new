@@ -31,44 +31,56 @@
                 <div class="hidden w-full md:block md:w-auto" id="navbar-default">
                     <ul
                         class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-default rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary">
+                        
                         <li>
-                            <a href="/"
+                            <a href="{{ route('home') }}"
                                 class="block py-2 px-3 text-white bg-brand rounded md:bg-transparent md:text-fg-brand md:p-0"
                                 aria-current="page">Home</a>
                         </li>
+                       
                         <li>
-                            <a href="/about"
+                            <a href="{{ route('about') }}"
                                 class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">About</a>
                         </li>
                             <li>
-                            <a href="/contact"
+                            <a href="{{ route('contact') }}"
                                 class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Contact</a>
                         </li>
+                        @can('User view')
                         <li>
-                            <a href="#"
-                                class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Post</a>
+                            <a href="{{ route('mainnet') }}"
+                                class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Data Internet</a>
                         </li>
+                        @endcan
+                        @can('Role-create')
                         <li>
-                            <a href="{{route('role.create')}}"
+                            <a href="{{route('role.index')}}"
                                 class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Role</a>
                         </li>
+                        @endcan
+                        @can('Permission-create')
                         <li>
-                            <a href="{{route('permission.create')}}"
+                            <a href="{{route('permission.index')}}"
                                 class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Permission</a>
                         </li>
+                        @endcan
+                        @can('User create')
                         <li>
                             <a href="{{route('user.create')}}"
                                 class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">User</a>
                         </li>
+                        @endcan
+                        {{-- @can('User create')
                         <li>
                             <a href="/create"
                                 class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Create</a>
                         </li>
+                        @endcan
                         <li>
                             <a href="/show"
                                 class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Data</a>
                         </li>
-                        <li>
+                        <li> --}}
                             <a href="/admin"
                                 class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Admin</a>
                         </li>
@@ -81,8 +93,8 @@
             </div>
         </nav>
     </main>
-</body>
-    @livewireScripts
+
+     @livewireScripts
 <!-- Footer -->
 <footer class="bg-gray-900 text-gray-400 py-12">
     <div class="container mx-auto px-6">
@@ -121,4 +133,8 @@
         </div>
     </div>
 </footer>
+
+
+</body>
+   
 </html>

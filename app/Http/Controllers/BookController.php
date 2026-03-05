@@ -12,6 +12,10 @@ class BookController extends Controller
        // return view('books.show', ['books' => $books]);
        return view('book.show', compact('books'));
     }
+    public function create() {
+        return view('book.create');
+    }
+
     //
     public function store(Request $request) {
         // Logic to store a book would go here

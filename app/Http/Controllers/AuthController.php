@@ -10,9 +10,30 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
 
+
+    public function __construct()
+    {
+        $this->middleware('role_or_permission:User access')->only(['create_user']);
+        $this->middleware('role_or_permission:User create')->only(['store_user']);
+
+        $this->middleware('role_or_permission:Permission access')->only(['create']);
+        $this->middleware('role_or_permission:Permission create')->only(['stores']);
+        
+        $this->middleware('role_or_permission:Role access')->only(['create_role']);
+        $this->middleware('role_or_permission:Role create')->only(['store_role']);
+
+        $this->middleware('role_or_permission:Permission edit')->only(['update_permission']);
+        $this->middleware('role_or_permission:Permission delete')->only(['delete_permission']);
+        $this->middleware('role_or_permission:User edit')->only(['update_user']);
+        $this->middleware('role_or_permission:User delete')->only(['delete_user']);
+    }
+    // functions for permission, role, user management and authentication
     public function create()
     {
-        return view('permission.form');
+        $permissions = Permission::all();
+        return view('permission.form', [
+            'permissions' => $permissions,
+        ]);
     }
     public function stores(Request $request)
     {
@@ -30,6 +51,7 @@ class AuthController extends Controller
             'roles' => $roles,
         ]);
     }
+    
    public function store_role(Request $request)
 {
     // Validate input
@@ -54,6 +76,8 @@ class AuthController extends Controller
 
     return back()->with('message', 'Role created successfully');
 }
+
+
 public function create_user(){
     $roles = Role::all();
     $users = User::all();
@@ -62,6 +86,7 @@ public function create_user(){
         'users' => $users,
     ]);
 }
+
 public function store_user(Request $request)
 {
   $role = Role::findById($request->role);
@@ -73,10 +98,7 @@ public function store_user(Request $request)
   $user->syncRoles($role);
   return back()->with('message', 'User created successfully');
 }
-public function home()
-{
-    return view('home');
-}
+
 public function login (Request $request)
 {
     $credentials = [
@@ -89,11 +111,84 @@ public function login (Request $request)
         return redirect()->route('login');
     }
 }
-
+public function home()
+{
+    return view('home');
+}
 public function logout()
 {
     Auth::guard('web')->logout();
     return redirect()->route('login');
 
 }
+ 
+public function update_permission(Request $request, $id)
+{
+    $permission = Permission::findOrFail($id);
+    
+    $request->validate([
+        'permission' => 'required|string|unique:permissions,name,' . $id,
+    ]);
+    
+    $permission->update(['name' => $request->permission]);
+    
+    return back()->with('message', 'Permission updated successfully');
+}
+
+/**
+ * Delete permission
+ */
+public function delete_permission($id)
+{
+    $permission = Permission::findOrFail($id);
+    $permission->delete();
+    
+    return back()->with('message', 'Permission deleted successfully');
+}
+
+/**
+ * Update user
+ */
+public function update_user(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+
+    $request->validate([
+        'name'     => 'required|string|max:255',
+        'email'    => 'required|email|unique:users,email,' . $id,
+        'role'     => 'required|exists:roles,id',
+        'password' => 'nullable|min:8',
+    ]);
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+    
+    if ($request->filled('password')) {
+        $user->password = bcrypt($request->password);
+    }
+    
+    $user->save();
+
+    $role = Role::findById($request->role);
+    $user->syncRoles([$role]);
+
+    return back()->with('message', 'User updated successfully');
+}
+
+/**
+ * Delete user
+ */
+public function delete_user($id)
+{
+    $user = User::findOrFail($id);
+    
+    if ($user->id === Auth::id()) {
+        return back()->with('error', 'You cannot delete your own account!');
+    }
+
+    $user->delete();
+
+    return back()->with('message', 'User deleted successfully');
+}
+
 }

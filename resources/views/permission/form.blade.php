@@ -47,7 +47,6 @@
                         </div>
                     </div>
                 @endif
-
                 <!-- Error Messages -->
                 @if ($errors->any())
                     <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r">
@@ -138,8 +137,81 @@
                     They can be assigned to roles, which are then assigned to users for efficient access management.
                 </p>
             </div>
+
+            <!-- Existing Permissions Table -->
+            <div class="mt-8">
+                <div class="bg-white rounded-lg shadow-md border border-default-medium">
+                    <div class="px-6 py-4 border-b border-default">
+                        <h2 class="text-xl font-semibold text-heading">Existing Permissions</h2>
+                        <p class="text-sm text-body mt-1">View and manage all system permissions</p>
+                    </div>
+                    
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-body">
+                            <thead class="text-xs text-body bg-neutral-secondary-soft border-b border-default">
+                                <tr>
+                                    <th class="px-6 py-3 font-semibold uppercase tracking-wide">ID</th>
+                                    <th class="px-6 py-3 font-semibold uppercase tracking-wide">Permission Name</th>
+                                    <th class="px-6 py-3 font-semibold uppercase tracking-wide text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                @forelse ($permissions as $permission)
+                                    <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+                                        <td class="px-6 py-4 font-medium whitespace-nowrap">
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td class="px-6 py-4 font-medium">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-200">
+                                                {{ $permission->name }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                                            <div class="flex items-center justify-end gap-2">
+                                                <button 
+                                                    type="button"
+                                                    onclick="openEditPermissionModal({{ $permission->id }}, '{{ addslashes($permission->name) }}')"
+                                                    class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+                                                    title="Edit Permission"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <form action="{{ route('permission.delete', $permission->id) }}" 
+                                                      method="POST" 
+                                                      class="inline"
+                                                      onsubmit="return confirm('Are you sure you want to delete this permission?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button 
+                                                        type="submit"
+                                                        class="text-red-600 hover:text-red-800 font-medium text-sm transition-colors"
+                                                        title="Delete Permission"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="px-6 py-12 text-center">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                                                </svg>
+                                                <p class="text-gray-500 font-medium">No permissions found</p>
+                                                <p class="text-gray-400 text-sm mt-1">Create your first permission to get started</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     @endsection
 </body>
-
 </html>
